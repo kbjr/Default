@@ -17,4 +17,5 @@ $('*').defaultText('Joe', { color: '#888' });
 // the '!' value makes text fields default value equal to their
 // title attribute's value
 $('*').defaultText('!');
+
 </code></pre>
