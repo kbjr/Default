@@ -20,4 +20,7 @@ $('*').defaultText('Joe', { color: '#888' });
 // title attribute's value
 $('*').defaultText('!');
 
+// set the text field with id 'one' to 'Some Text'
+$('#one').defaultText('Some Text');
+
 </code></pre>
