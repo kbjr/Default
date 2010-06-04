@@ -5,7 +5,7 @@
  * Date Last Mod: 3 June 2010
  *
  * Copyright 2010 James Brumond
- * All Rights Reserved
+ * Dual licensed under MIT and GPL
  */
 
 (function(window, $) {

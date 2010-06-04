@@ -1,6 +1,8 @@
 h1. Default
 
 By: James Brumond
+Copyright 2010 James Brumond
+Dual licensed under MIT and GPL
 
 A jQuery plugin for giving text fields customizable default values.
 
