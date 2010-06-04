@@ -1,0 +1,20 @@
+h1. Default
+
+By: James Brumond
+
+A jQuery plugin for giving text fields customizable default values.
+
+h2. Examples
+
+<pre><code>
+// set all text fields' default values to 'Bob'
+$('*').defaultText('Bob');
+
+// set all text fields' default values to 'Joe' and make the
+// default text a light grey
+$('*').defaultText('Joe', { color: '#888' });
+
+// the '!' value makes text fields default value equal to their
+// title attribute's value
+$('*').defaultText('!');
+</code></pre>

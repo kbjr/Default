@@ -13,8 +13,10 @@
 var
 
 _hasOwn = function(o, i) {
-	if (jsk) return jsk.helpers.hasOwnProperty(o, i);
-	if (o.hasOwnProperty) return o.hasOwnProperty(i);
+	if (typeof jsk != 'undefined')
+		return jsk.helpers.hasOwnProperty(o, i);
+	if (o.hasOwnProperty)
+		return o.hasOwnProperty(i);
 	return null;
 },
 
