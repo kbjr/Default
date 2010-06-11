@@ -1,6 +1,8 @@
 /*
- * textfields.js
+ * jquery.defaultText.js
+ * 
  * Author: James Brumond
+ * Version: 0.2.1
  * Date Created: 2 June 2010
  * Date Last Mod: 3 June 2010
  *
@@ -57,12 +59,17 @@ getStyle = function(elem, styleProp) {
 	return style;
 };
 
-$.fn.defaultText = function(defText, styleOverride) {
-	var styleOveride = styleOverride || { };
-	return this.filter('input[type=text], input[type=password]').each(function() {
+$.fn.defaultText = function(options) {
+	var options = options || { };
+	options.defText = options.defText || '';
+	options.textStyle = options.textStyle || { };
+	options.inputStyle = options.inputStyle || { };
+	options.onfocus = options.onfocus || function() { };
+	options.onblur = options.onblur || function() { };
+	return this.filter('input[type=text], input[type=password], textarea').each(function() {
 		// build the text element and put it in the document
 		var input = this,
-		text = (defText == '!') ? input.title : defText,
+		text = (options.defText == '') ? input.title : options.defText,
 		span = input.parentNode.appendChild(_elem('span', {
 			style: {
 				position: 'absolute',
@@ -72,9 +79,10 @@ $.fn.defaultText = function(defText, styleOverride) {
 				fontSize: getStyle(input, 'fontSize'),
 				fontWeight: getStyle(input, 'fontWeight'),
 				color: getStyle(input, 'color'),
-				width: input.clientWidth + 'px',
+				width: getStyle(input, 'width'),
 				cursor: 'text',
-				backgroundColor: getStyle(input, 'backgroundColor')
+				backgroundColor: getStyle(input, 'backgroundColor'),
+				zIndex: parseInt(getStyle(input, 'zIndex')) + 1
 			},
 			innerHTML: text
 		})),
@@ -82,6 +90,7 @@ $.fn.defaultText = function(defText, styleOverride) {
 		click = function() {
 			$(span).hide();
 			input.focus();
+			options.onfocus.call(input);
 		},
 		position = function() {
 			span.style.top = parseInt(getStyle(input, 'paddingTop')) +
@@ -89,7 +98,8 @@ $.fn.defaultText = function(defText, styleOverride) {
 			span.style.left = parseInt(getStyle(input, 'paddingLeft')) +
 				parseInt(getStyle(input, 'borderLeftWidth')) + input.offsetLeft + 'px';
 		};
-		setStyle(span, styleOverride);
+		setStyle(span, options.textStyle);
+		setStyle(input, options.inputStyle);
 		// change/add input properties
 		if (input.defValue) input.parentNode.removeChild(input.defValue);
 		input.defValue = span;
@@ -99,10 +109,15 @@ $.fn.defaultText = function(defText, styleOverride) {
 			if (input.value == '') {
 				$(span).show();
 			}
+			options.onblur.call(input);
 		});
 		// add a window.resize event to make sure the positioning doesn't change
 		$(window).resize(position);
-		window.setTimeout(position, 20);
+		// sometimes it doesn't quite take, so call
+		// it a couple times
+		window.setTimeout(position, 50);
+		window.setTimeout(position, 500);
+		window.setTimeout(position, 3000);
 	});
 };
 
