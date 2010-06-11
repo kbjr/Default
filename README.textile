@@ -9,7 +9,7 @@ A jQuery plugin for giving text fields customizable default values.
 
 h2. Description
 
-Uses an overlaying span to give the appearance of a text field having a default value which goes away when the field is focused and comes back when the empty field is unfocused. Allows for the separate styling of the default value apart from the normal text field styles and the setting of event functions for onfocus and onblur. Default value can be set specifically from the function (eg. $('input').defaultText({ defText: 'Bob' })) or individually in the page markup by setting a "title" attribute and calling the function (eg. $('input').defaultText())
+Uses an overlaying span to give the appearance of a text field having a default value which goes away when the field is focused and comes back when the empty field is unfocused. Allows for the separate styling of the default value apart from the normal text field styles and the setting of event functions for onfocus and onblur. Default value can be set specifically from the function (eg. @$('input').defaultText({ defText: 'Bob' })@) or individually in the page markup by setting a "title" attribute and calling the function (eg. @$('input').defaultText()@)
 
 h2. Synopsis
 
