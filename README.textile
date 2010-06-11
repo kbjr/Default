@@ -7,11 +7,11 @@ Dual licensed under MIT and GPL
 
 A jQuery plugin for giving text fields customizable default values.
 
-h2. DESCRIPTION
+h2. Description
 
 Uses an overlaying span to give the appearance of a text field having a default value which goes away when the field is focused and comes back when the empty field is unfocused. Allows for the separate styling of the default value apart from the normal text field styles and the setting of event functions for onfocus and onblur. Default value can be set specifically from the function (eg. $('input').defaultText({ defText: 'Bob' })) or individually in the page markup by setting a "title" attribute and calling the function (eg. $('input').defaultText())
 
-h2. SYNOPSIS
+h2. Synopsis
 
 <pre><code>Object jQuery::defaultText ([ Object options ])
   options {
@@ -22,28 +22,29 @@ h2. SYNOPSIS
     [ Function onblur ]
   }</code></pre>
   
-h2. OPTIONS
+h2. Options
 
-defText
+@defText@
 _Optional_
-Type: String
+_Type: String_
 Sets the text to be displayed as default. If left blank, the function will check the text field's "title" attribute and, if available, use that.
 
-textStyle
-Optional
-Type: Object
+@textStyle@
+_Optional_
+_Type: Object_
 A set of key-value pairs for styles to be applied to the default text.
 
-inputStyle
-Optional
-Type: Object
+@inputStyle@
+_Optional_
+_Type: Object_
 A set of key-value pairs for styles to be applied to the text field.
 
-onfocus
-Optional
-Type: Function
+@onfocus@
+_Optional_
+_Type: Function_
 If given, a function that is called when the text field is focused. (this is called after the default text is hidden.)
-onblur
-Optional
-Type: Function
+
+@onblur@
+_Optional_
+_Type: Function_
 If given, a function that is called when the text field is unfocused. (this is called after the default text is re-shown.)
