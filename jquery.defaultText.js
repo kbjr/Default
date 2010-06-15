@@ -2,9 +2,9 @@
  * jquery.defaultText.js
  * 
  * Author: James Brumond
- * Version: 0.2.1
+ * Version: 0.2.2
  * Date Created: 2 June 2010
- * Date Last Mod: 3 June 2010
+ * Date Last Mod: 14 June 2010
  *
  * Copyright 2010 James Brumond
  * Dual licensed under MIT and GPL
@@ -84,7 +84,8 @@ $.fn.defaultText = function(options) {
 				backgroundColor: getStyle(input, 'backgroundColor'),
 				zIndex: parseInt(getStyle(input, 'zIndex')) + 1
 			},
-			innerHTML: text
+			innerHTML: text,
+			className: 'default'
 		})),
 		// define the click/focus event function
 		click = function() {
@@ -98,6 +99,9 @@ $.fn.defaultText = function(options) {
 			span.style.left = parseInt(getStyle(input, 'paddingLeft')) +
 				parseInt(getStyle(input, 'borderLeftWidth')) + input.offsetLeft + 'px';
 		};
+		if (String(input.id).length > 0) {
+			span.id = 'default-' + input.id;
+		}
 		setStyle(span, options.textStyle);
 		setStyle(input, options.inputStyle);
 		// change/add input properties
