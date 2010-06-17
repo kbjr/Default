@@ -1,7 +1,7 @@
 h1. Default
 
 By: James Brumond
-Verison: 0.2.2
+Verison: 0.2.3
 Copyright 2010 James Brumond
 Dual licensed under MIT and GPL
 
