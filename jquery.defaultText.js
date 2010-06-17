@@ -2,7 +2,7 @@
  * jquery.defaultText.js
  * 
  * Author: James Brumond
- * Version: 0.2.2
+ * Version: 0.2.3
  * Date Created: 2 June 2010
  * Date Last Mod: 14 June 2010
  *
@@ -117,6 +117,7 @@ $.fn.defaultText = function(options) {
 		});
 		// add a window.resize event to make sure the positioning doesn't change
 		$(window).resize(position);
+		$(window).focus(position);
 		// sometimes it doesn't quite take, so call
 		// it a couple times
 		window.setTimeout(position, 50);
