@@ -82,7 +82,7 @@ $.fn.defaultText = function(options) {
 				width: getStyle(input, 'width'),
 				cursor: 'text',
 				backgroundColor: getStyle(input, 'backgroundColor'),
-				zIndex: parseInt(getStyle(input, 'zIndex')) + 1
+				zIndex: (parseInt(getStyle(this, 'zIndex')) || 0) + 1
 			},
 			innerHTML: text,
 			className: 'default'
