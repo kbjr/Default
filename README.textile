@@ -1,7 +1,7 @@
 h1. Default
 
 By: James Brumond
-Verison: 0.2.3
+Verison: 0.2.4
 Copyright 2010 James Brumond
 Dual licensed under MIT and GPL
 
@@ -48,3 +48,9 @@ If given, a function that is called when the text field is focused. (this is cal
 _Optional_
 _Type: Function_
 If given, a function that is called when the text field is unfocused. (this is called after the default text is re-shown.)
+
+h2. Contributors
+
+whatcould <"http://github.com/whatcould":http://github.com/whatcould>
+IE8 zIndex bug fix
+
