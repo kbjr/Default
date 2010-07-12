@@ -2,7 +2,7 @@
  * jquery.defaultText.js
  * 
  * Author: James Brumond
- * Version: 0.3.1
+ * Version: 0.3.2
  * Date Created: 2 June 2010
  * Date Last Mod: 12 July 2010
  *
@@ -166,9 +166,9 @@ $.fn.defaultText = function(options) {
 			$(window).focus(input._defaultText.position);
 			// FIXME sometimes it doesn't quite take, so call
 			// it a couple times
-			window.setTimeout(input._defaultText.position, 50);
-			window.setTimeout(input._defaultText.position, 500);
-			window.setTimeout(input._defaultText.position, 3000);
+			window.setTimeout(input._defaultText.reset, 50);
+			window.setTimeout(input._defaultText.reset, 500);
+			window.setTimeout(input._defaultText.reset, 3000);
 			// add the span to the element's _defaultText property
 			input._defaultText.span = span;
 		}
