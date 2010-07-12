@@ -2,7 +2,7 @@
  * jquery.defaultText.js
  * 
  * Author: James Brumond
- * Version: 0.3.2
+ * Version: 0.3.3
  * Date Created: 2 June 2010
  * Date Last Mod: 12 July 2010
  *
@@ -108,6 +108,13 @@ $.fn.defaultText = function(options) {
 					if (typeof input._defaultText.reset != 'function') return true;
 					input._defaultText.span.parentNode.removeChild(input._defaultText.span);
 					input._defaultText = false;
+					break;
+				case 'poke':
+					if (input.value == '') {
+						$(input._defaultText.span).show();
+					} else {
+						$(input._defaultText.span).hide();
+					}
 					break;
 				default: break;
 			}

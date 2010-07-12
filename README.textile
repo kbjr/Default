@@ -1,7 +1,7 @@
 h1. Default
 
 By: James Brumond
-Verison: 0.3.2
+Verison: 0.3.3
 Copyright 2010 James Brumond
 Dual licensed under MIT and GPL
 
@@ -58,6 +58,9 @@ Resets to all of the originally given options when the default text was set.
 
 @destroy@
 Destroys the default text and all stored options.
+
+@poke@
+Checks if the field is empty and shows/hides the default text accordingly.
 
 h2. Contributors
 
