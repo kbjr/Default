@@ -1,7 +1,7 @@
 h1. Default
 
 By: James Brumond
-Verison: 0.2.3
+Verison: 0.3.1
 Copyright 2010 James Brumond
 Dual licensed under MIT and GPL
 
@@ -10,6 +10,10 @@ A jQuery plugin for giving text fields customizable default values.
 h2. Description
 
 Uses an overlaying span to give the appearance of a text field having a default value which goes away when the field is focused and comes back when the empty field is unfocused. Allows for the separate styling of the default value apart from the normal text field styles and the setting of event functions for onfocus and onblur. Default value can be set specifically from the function (eg. @$('input').defaultText({ defText: 'Bob' })@) or individually in the page markup by setting a "title" attribute and calling the function (eg. @$('input').defaultText()@)
+
+h3. Alternate HTML5 Placeholder Patch
+
+If you don't need as much control as is offered by the full Default plugin, there is also a file in this repository (@placeholder.js@) which is a patch for the HTML5 @placeholder@ attribute. Simply include it in the document and now where you use a @placeholder="..."@ attribute in your inputs, you will get a placeholder text, even in non-HTML5 browsers. This script does *not* rely on jQuery like the Default plugin.
 
 h2. Synopsis
 
