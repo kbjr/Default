@@ -165,7 +165,6 @@ if ('getElementsByTagName' in document) {
 		
 		// Run through each of the elements
 		window.fixPlaceholder = function(inputs) {
-			console.log(inputs);
 			for (var i = 0; i < inputs.length; i++) {
 				var input = inputs[i], placeholder;
 				if (input.type && (input.type === 'text' || input.type === 'password')) {
