@@ -5,14 +5,14 @@
  * browsers which do not natively support it.
  *
  * @author     James Brumond
- * @version    0.1.1-a
+ * @version    0.1.2-a
  * @copyright  Copyright 2010 James Brumond
  * @license    Dual licensed under MIT and GPL
  */
 
 (function(window, undefined) {
 
-if ('getElementsByTagName' in document) {
+if (document.getElementsByTagName) {
 	
 	// Test for native placeholder support
 	var supportsPlaceholder = (function() {
@@ -25,45 +25,84 @@ if ('getElementsByTagName' in document) {
 	
 	// If there is no native support, build it
 	if (! supportsPlaceholder) {
-
-		// Every <input/> in the document
-		var inputs = document.getElementsByTagName('input'),
 		
 		// The color to make the placeholder text
-		placeholderColor = '#aaa',
+		var placeholderColor = '#aaa',
 		
-		// Builds composite styles
-		getComposite = function(elem, prop) {
-			switch (prop) {
-				case 'margin': return [
-					getStyle(elem, 'marginTop', true),
-					getStyle(elem, 'marginRight', true),
-					getStyle(elem, 'marginBottom', true),
-					getStyle(elem, 'marginLeft', true)
-				].join(' '); break;
-				case 'padding': return [
-					getStyle(elem, 'paddingTop', true),
-					getStyle(elem, 'paddingRight', true),
-					getStyle(elem, 'paddingBottom', true),
-					getStyle(elem, 'paddingLeft', true)
-				].join(' '); break;
-				default: return false; break;
-			}
-		},
-		
-		// Gets an element's style property
-		getStyle = function(elem, prop) {
-			var style = (arguments[2]) ? false : getComposite(elem, prop);
-			if (! style) {
-				if (elem.currentStyle)
-					style = elem.currentStyle[prop];
-				else if (window.getComputedStyle)
-					style = document.defaultView.getComputedStyle(elem, null)[prop];
-				else if (elem.style && prop in elem.style)
-					style = elem.style[prop];
-			}
-			return style;
-		},
+		/**
+		 * Read a style property from an element
+		 *
+		 * @access  public
+		 * @param   node      the element
+		 * @param   string    the property to read
+		 * @return  string
+		 */
+		getStyle = (function() {
+			// Get a composite style property
+			var getComposite = (function() {
+				// Composite properties
+				var composites = {
+					margin: [ 'Top', 'Right', 'Bottom', 'Left' ],
+					padding: [ 'Top', 'Right', 'Bottom', 'Left' ],
+					borderTop: [ 'Width', 'Color', 'Style' ],
+					borderRight: [ 'Width', 'Color', 'Style' ],
+					borderBottom: [ 'Width', 'Color', 'Style' ],
+					borderLeft: [ 'Width', 'Color', 'Style' ],
+					background: [ 'Color', 'Image', 'Repeat', 'Attachment', 'Position' ],
+					font: [ 'Style', 'Variant', 'Weight', 'Size', 'Family' ],
+					listStyle: [ 'Type', 'Position', 'Image' ],
+					outline: [ 'Color', 'Style', 'Width' ]
+				}
+				// The actual getComposite function
+				return function(elem, prop) {
+					if (prop in composites) {
+						var segs = composites[prop], result = [ ];
+						for (var i = 0; i < segs.length; i++) {
+							result[i] = getStyle(elem, prop + segs[i], true);
+						}
+						return result.join(' ');
+					}
+					return null;
+				};
+			}()),
+			// Converts "some-property" to "someProperty"
+			toCamelCase = function(prop) {
+				prop = prop.split('-');
+				for (var i = 1; i < prop.length; i++) {
+					var char = prop[i][0];
+					prop[i] = char.toUpperCase() + prop[i].substring(1);
+				}
+				return prop.join('');
+			},
+			// Do the actual getting
+			getStyleValue = function(e, p) {
+				var style = null;
+				if (e.currentStyle) {
+					style = e.currentStyle[p];
+				} else if (window.getComputedStyle) {
+					style = document.defaultView.getComputedStyle(e, null)[p];
+				} else if (p in e.style) {
+					style = e.style[p];
+				}
+				return style;
+			};
+			// The actual getStyle function
+			return function(elem, prop, comp) {
+				var prop = toCamelCase(prop || ''),
+				style = (comp) ? null : getComposite(elem, prop);
+				if (style == null) {
+					if (elem.parentNode == null) {
+						var body = document.getElementsByTagName('body')[0];
+						elem = body.appendChild(elem);
+						style = getStyleValue(elem, prop);
+						elem = body.removeChild(elem);
+					} else {
+						style = getStyleValue(elem, prop);
+					}			
+				}
+				return style;
+			};
+		}()),
 		
 		// Gets the offset position of an element
 		getOffset = function(input) {
@@ -99,10 +138,23 @@ if ('getElementsByTagName' in document) {
 			}
 			
 			// Build the span element
-			var offset = getOffset(input),
-			span = html('<span style="position: absolute; display: inline-block; color: ' + placeholderColor +
-				'; margin: 0; padding: 0; top: ' + offset.top + 'px; left: ' + offset.left + 'px; cursor: text;">' +
-				text + '</span>');
+			var offset = getOffset(input), span,
+			zIndex = getStyle(input, 'zIndex') || 99999;
+			$span = $('<span>' + text + '</span>');
+			$span.css({
+				position: 'absolute',
+				display: 'inline-block',
+				color: placeholderColor,
+				margin: 0,
+				padding: 0,
+				top: offset.top + 'px',
+				left: offset.left + 'px',
+				cursor: text,
+				zIndex: zIndex,
+				font: getStyle(input, 'font'),
+				background: '#fff'
+			});
+			span = $span[0];
 				
 			// Link the placeholder and input elements
 			span.relatedInput = input;
@@ -165,19 +217,23 @@ if ('getElementsByTagName' in document) {
 		
 		// Run through each of the elements
 		window.fixPlaceholder = function(inputs) {
+			// Every <input/> in the document
+			var inputs = inputs || document.getElementsByTagName('input');
+			if (typeof inputs.nodeType === 'number') inputs = [ inputs ];
+			// Loop though, adding placeholders
 			for (var i = 0; i < inputs.length; i++) {
 				var input = inputs[i], placeholder;
 				if (input.type && (input.type === 'text' || input.type === 'password')) {
 					placeholder = input.placeholder || input.getAttribute('placeholder');
 					if (typeof placeholder === 'string' && placeholder.length) {
-						setPlaceholder(input);
+						setPlaceholder(input, placeholder);
 					}
 				}
 			}
 		};
 		
 		addEventSimple(window, 'load', function() {
-			window.fixPlaceholder(inputs);
+			window.fixPlaceholder();
 		});
 	
 	} else {
