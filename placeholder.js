@@ -69,8 +69,8 @@ if (document.getElementsByTagName) {
 			toCamelCase = function(prop) {
 				prop = prop.split('-');
 				for (var i = 1; i < prop.length; i++) {
-					var char = prop[i][0];
-					prop[i] = char.toUpperCase() + prop[i].substring(1);
+					var ch = prop[i][0];
+					prop[i] = ch.toUpperCase() + prop[i].substring(1);
 				}
 				return prop.join('');
 			},
@@ -103,6 +103,15 @@ if (document.getElementsByTagName) {
 				return style;
 			};
 		}()),
+
+		// Sets some style properties
+		setStyle = function(elem, styles) {
+			for (var i in styles) {
+				if (styles.hasOwnProperty(i)) {
+					elem.style[i] = styles[i];
+				}
+			}
+		}
 		
 		// Gets the offset position of an element
 		getOffset = function(input) {
@@ -140,8 +149,8 @@ if (document.getElementsByTagName) {
 			// Build the span element
 			var offset = getOffset(input), span,
 			zIndex = getStyle(input, 'zIndex') || 99999;
-			$span = $('<span>' + text + '</span>');
-			$span.css({
+			span = html('<span>' + text + '</span>');
+			setStyle(span, {
 				position: 'absolute',
 				display: 'inline-block',
 				color: placeholderColor,
@@ -154,7 +163,11 @@ if (document.getElementsByTagName) {
 				font: getStyle(input, 'font'),
 				background: '#fff'
 			});
-			span = $span[0];
+
+			// Fix an IE positioning bug with offsetParent.style.position == static (#1)
+			if (input.offsetParent && getStyle(input.offsetParent, 'position') === 'static') {
+				input.offsetParent.style.position = 'relative';
+			}
 				
 			// Link the placeholder and input elements
 			span.relatedInput = input;
@@ -204,10 +217,11 @@ if (document.getElementsByTagName) {
 		
 		// Attaches an event handler
 		addEventSimple = function(obj, evt, fn) {
-			if (obj.addEventListener)
+			if (obj.addEventListener) {
 				obj.addEventListener(evt, fn, false);
-			else if (obj.attachEvent)
+			} else if (obj.attachEvent) {
 				obj.attachEvent('on' + evt, fn);
+			}
 		},
 		
 		// Makes sure that the placeholder is in the right place
