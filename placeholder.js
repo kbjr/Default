@@ -192,6 +192,10 @@ if (document.getElementsByTagName) {
 				}
 			};
 			
+			if (input.value.length) {
+				hidePlaceholder(input);
+			}
+			
 			// Set event handlers
 			addEventSimple(window, 'resize', onresize);
 			addEventSimple(span, 'click', onfocus);
